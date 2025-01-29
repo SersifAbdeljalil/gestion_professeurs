@@ -27,7 +27,7 @@ app.use("/api/professeurs", professeursRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/modifierProf", modifierRoutes);
 // Port et démarrage du serveur
-const PORT = 3005;
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Backend running on http://localhost:${PORT}`);
 });

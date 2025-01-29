@@ -2,16 +2,17 @@ const express = require("express");
 const multer = require("multer");
 const db = require("../db/connection"); // Connexion à la base de données
 const path = require("path");
-const app = express();
 
-app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Servir les fichiers uploadés
+const router = express.Router();
 
-// Configurer Multer pour les fichiers
+// Servir les fichiers uploadés
+router.use("/uploads", express.static(path.join(__dirname, "../uploads"))); 
+
+// Configurer Multer pour la gestion des fichiers uploadés
 const upload = multer({ dest: "uploads/" });
 
-// Récupérer les informations d'un professeur
-app.get("/professeurs/:id", (req, res) => {
+// 🔹 Récupérer les informations d'un professeur
+router.get("/:id", (req, res) => {
     const { id } = req.params;
 
     const query = "SELECT * FROM Professeurs WHERE id = ?";
@@ -29,20 +30,18 @@ app.get("/professeurs/:id", (req, res) => {
     });
 });
 
-// Modifier les informations d'un professeur
-app.put("/professeurs/:id", upload.single("photo"), (req, res) => {
+// 🔹 Modifier les informations d'un professeur
+router.put("/:id", upload.single("photo"), (req, res) => {
     const { id } = req.params;
     const { nom, prenom, email, telephone, matiere, statut } = req.body;
     const photoUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-    // Construire la requête SQL
     const query = `
         UPDATE Professeurs
         SET nom = ?, prenom = ?, email = ?, telephone = ?, matiere = ?, statut = ?, photo_profil = COALESCE(?, photo_profil)
         WHERE id = ?
     `;
 
-    // Exécuter la requête
     db.query(query, [nom, prenom, email, telephone, matiere, statut, photoUrl, id], (err, result) => {
         if (err) {
             console.error("Erreur lors de la mise à jour :", err);
@@ -55,7 +54,7 @@ app.put("/professeurs/:id", upload.single("photo"), (req, res) => {
 
         res.json({ message: "Mise à jour réussie !" });
     });
+
 });
 
-// Démarrage du serveur
-app.listen(3000, () => console.log("Serveur lancé sur http://localhost:3000"));
+module.exports = router;
