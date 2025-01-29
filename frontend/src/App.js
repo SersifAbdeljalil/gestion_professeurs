@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AjouterProfesseur from "./components/AjouterProfesseur";
 import Login from "./components/Login";
 import ProfileProf from "./components/ProfileProf";
 
 const App = () => {
-  const [teacherId, setTeacherId] = useState(2); // Exemple d'ID d'un professeur (à remplacer par votre logique)
+  const [teacherId, setTeacherId] = useState(null);
+
+  useEffect(() => {
+    // Récupérer l'ID du professeur depuis localStorage après la connexion
+    const storedTeacherId = localStorage.getItem("profId");
+    if (storedTeacherId) {
+      setTeacherId(storedTeacherId);
+    }
+  }, []);
 
   return (
     <Router>
@@ -13,7 +21,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/ajouter-professeur" element={<AjouterProfesseur />} />
-          <Route path="/profile" element={<ProfileProf teacherId={teacherId} />} />
+          {/* Passer le teacherId récupéré dynamiquement dans ProfileProf */}
+          <Route path="/profile" element={<ProfileProf />} />
         </Routes>
       </div>
     </Router>
