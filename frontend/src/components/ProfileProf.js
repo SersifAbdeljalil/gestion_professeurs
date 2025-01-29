@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 const ProfileProf = () => {
-  const profId = localStorage.getItem("profId"); // Récupérer l'ID stocké après connexion
+  const profId = localStorage.getItem("profId"); // Récupérer l'ID du professeur connecté
+  console.log("🔍 ID du professeur récupéré :", profId);
   const [professeur, setProfesseur] = useState(null);
   const [form, setForm] = useState({
     nom: "",
@@ -10,55 +11,57 @@ const ProfileProf = () => {
     telephone: "",
     matiere: "",
     statut: "",
-    photo: null, // Ajouter un état pour gérer la photo
+    photo: null,
   });
 
   useEffect(() => {
     if (!profId) return;
-    
-    fetch(`http://localhost:3001/api/professeurs/${profId}`)
-      .then((res) => res.json())
+
+    fetch(`http://localhost:3001/api/modifierProf/${profId}`)
+      .then((res) => {
+        console.log("📡 Réponse HTTP :", res.status); // Vérifier si la requête est bonne
+        if (!res.ok) {
+          throw new Error("Erreur lors de la récupération des données");
+        }
+        return res.json();
+      })
       .then((data) => {
         setProfesseur(data);
-        setForm(data); // Remplir le formulaire avec les données récupérées
+        setForm({ ...data, photo: null }); // Remplir le formulaire
       })
-      .catch((err) => console.error("Erreur :", err));
+      .catch((err) => console.error("❌ Erreur :", err));
   }, [profId]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    if (type === "file") {
-      setForm({ ...form, photo: files[0] }); // Gérer le fichier photo
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "file" ? files[0] : value,
+    }));
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("nom", form.nom);
-    formData.append("prenom", form.prenom);
-    formData.append("email", form.email);
-    formData.append("telephone", form.telephone);
-    formData.append("matiere", form.matiere);
-    formData.append("statut", form.statut);
-    if (form.photo) formData.append("photo", form.photo); // Ajouter la photo au FormData
+    Object.entries(form).forEach(([key, value]) => {
+      if (value !== null) formData.append(key, value);
+    });
 
     try {
-      const response = await fetch(`http://localhost:3001/api/professeurs/${profId}`, {
+      const response = await fetch(`http://localhost:3001/api/modifierProf/${profId}`, {
         method: "PUT",
-        body: formData, // Envoyer FormData au lieu de JSON
+        body: formData,
       });
 
-      if (response.ok) {
-        alert("Mise à jour réussie !");
-      } else {
-        alert("Erreur lors de la mise à jour.");
+      if (!response.ok) {
+        throw new Error("Erreur lors de la mise à jour.");
       }
+
+      alert("✅ Mise à jour réussie !");
     } catch (error) {
-      console.error("Erreur :", error);
+      console.error("❌ Erreur :", error);
+      alert("❌ Échec de la mise à jour.");
     }
   };
 

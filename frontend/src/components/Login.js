@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import api from "../services/api";  // Assurez-vous que api.js est correctement configuré
+import api from "../services/api"; // Assurez-vous que api.js est correctement configuré
 import "./AjouterProfesseur.css";
 
 const Login = () => {
@@ -19,14 +19,24 @@ const Login = () => {
     // Fonction de gestion de l'envoi du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Données envoyées:", formData);  // Vérification des données envoyées
+        console.log("Données envoyées:", formData); // Vérification des données envoyées
+
         try {
-            const response = await api.post("/auth/login", formData);  // Correction de l'endpoint ici
+            const response = await api.post("/auth/login", formData); // Correction de l'endpoint ici
 
             // Vérification de la réponse du serveur
             if (response.status === 200) {
-                
-                navigate("/ProfileProf"); // Redirection vers la page Professeurs
+                const userData = response.data.user;
+                console.log("🔹 Utilisateur connecté :", userData); // Vérifier ce que le backend renvoie
+
+                if (userData && userData.id) {
+                    localStorage.setItem("profId", userData.id); // Stocker l'ID du professeur
+                    console.log("✅ ID stocké :", localStorage.getItem("profId")); // Vérifier si l'ID est bien enregistré
+                } else {
+                    console.error("❌ Erreur : ID du professeur non trouvé !");
+                }
+
+                navigate("/ProfileProf");
             } else {
                 alert("Email ou mot de passe incorrect.");
             }

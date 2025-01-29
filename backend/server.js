@@ -5,6 +5,7 @@ const db = require("./db/connection");
 const professeursRoutes = require("./routes/professeurs");
 const authRoutes = require("./routes/auth");
 const modifierRoutes = require("./routes/modifierProf");
+//const cartesRoutes = require("./routes/cartes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ db.connect((err) => {
 app.use("/api/professeurs", professeursRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/modifierProf", modifierRoutes);
+//app.use("/api/cartes", cartesRoutes);
 // Port et démarrage du serveur
 const PORT = 3001;
 app.listen(PORT, () => {

@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/" element={<Login />} />
           <Route path="/ajouter-professeur" element={<AjouterProfesseur />} />
           {/* Passer le teacherId récupéré dynamiquement dans ProfileProf */}
-          <Route path="/profile" element={<ProfileProf />} />
+          <Route path="/ProfileProf" element={<ProfileProf />} />
         </Routes>
       </div>
     </Router>
