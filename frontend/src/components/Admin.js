@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus, FaFileImport, FaPrint, FaSignOutAlt } from "react-icons/fa";
 import * as XLSX from "xlsx";
+import '../styles/Admin.css'; // Importer le CSS
 
 const Admin = () => {
   const [professeurs, setProfesseurs] = useState([]);
@@ -39,46 +40,46 @@ const Admin = () => {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h1>Liste des Professeurs</h1>
-        <button onClick={handleLogout} style={{ backgroundColor: "red", color: "white", padding: "10px", border: "none", borderRadius: "5px" }}>
+        <button onClick={handleLogout} className="logout-button">
           <FaSignOutAlt /> Déconnexion
         </button>
       </div>
 
-      <table border="1" width="100%" cellPadding="10" style={{ marginTop: "20px", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Statut</th>
-           
-          </tr>
-        </thead>
-        <tbody>
-          {professeurs.map((prof, index) => (
-            <tr key={index}>
-              <td>{prof.nom}</td>
-              <td>{prof.prenom}</td>
-              <td>{prof.email}</td>
-              <td>{prof.statut}</td>
-              
+      <div className="table-container">
+        <table className="prof-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Statut</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {professeurs.map((prof, index) => (
+              <tr key={index}>
+                <td>{prof.nom}</td>
+                <td>{prof.prenom}</td>
+                <td>{prof.email}</td>
+                <td>{prof.statut}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "15px" }}>
+      <div className="button-container">
         <Link to="/ajouter-professeur">
-          <button style={{ backgroundColor: "#429ebd", color: "white", padding: "10px", border: "none", borderRadius: "5px" }}>
+          <button className="add-button">
             <FaPlus /> Ajouter Manuellement
           </button>
         </Link>
         <Link to="/importer-prof">
-          <button style={{ backgroundColor: "#F7AD19", color: "white", padding: "10px", border: "none", borderRadius: "5px" }}>
+          <button className="import-button">
             <FaFileImport /> Importer via Excel
           </button>
         </Link>
-        <button onClick={handleExportExcel} style={{ backgroundColor: "#4CAF50", color: "white", padding: "10px", border: "none", borderRadius: "5px" }}>
+        <button onClick={handleExportExcel} className="export-button">
           <FaPrint /> Imprimer (Excel)
         </button>
       </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importation des icônes
-import "./AjouterProfesseur.css";
+import "../styles/AjouterProfesseur.css";
 
 const AjouterProfesseur = () => {
     const [formData, setFormData] = useState({

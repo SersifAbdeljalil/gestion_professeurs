@@ -25,12 +25,16 @@ const ProfileProf = () => {
     <div className="profile-container">
       <div className="profile-card">
         <div className="profile-header">
+        <div className="profile-title">
+          <h2>Mon Profil</h2>
+            </div>
+
           {/* Image de profil */}
           <img
-  src={professeur.photo_profil ? `http://localhost:3001/uploads/${professeur.photo_profil}?t=${new Date().getTime()}` : "/default-profile.png"}
-  alt="Profile"
-  className="profile-photo"
-/>
+               src={`http://localhost:3001${professeur.photo_profil}` || "/default-profile.png"}
+                 alt="Profile"
+                 className="profile-photo"/>
+
 
 
 
@@ -43,7 +47,6 @@ const ProfileProf = () => {
           </button>
         </div>
 
-        <h2>Mon Profil</h2>
         <div className="profile-info">
           <div className="profile-field">
             <label>Nom:</label>
@@ -73,15 +76,14 @@ const ProfileProf = () => {
 
         {/* Lien pour générer la carte professionnelle */}
         <h3>Carte Professionnelle</h3>
+        <p>Accédez à  ce lien pour imprimer votre carte professionnelle</p>
         <div className="profile-info">
-          <div className="profile-field">
-            <a
-              href={`http://localhost:3001/api/cartes/${profId}/generate-pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Générer ma carte professionnelle
-            </a>
+         <div className="profile-card-link">
+               <a
+                 href={`http://localhost:3001/api/cartes/${profId}/generate-pdf`}
+                   target="_blank"
+                     rel="noopener noreferrer" >
+                               Carte professionnelle</a>
           </div>
         </div>
 

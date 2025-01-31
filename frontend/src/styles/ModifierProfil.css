@@ -1,0 +1,67 @@
+/* Styles généraux */
+.modifier-profile {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Titre */
+.modifier-profile h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #3d3d3d;
+}
+
+/* Champs du formulaire */
+.modifier-profile input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Champ de fichier */
+.modifier-profile input[type="file"] {
+    border: none;
+    margin-top: 5px;
+}
+
+/* Bouton Mettre à jour */
+.modifier-profile button {
+    width: 100%;
+    background: #8B4513;
+    color: white;
+    padding: 12px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.modifier-profile button:hover {
+    background: #6b3610;
+}
+.retour-link {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: #8B4513; /* Marron */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+}
+
+.retour-link:hover {
+    color: #654321; /* Marron plus foncé */
+    text-decoration: underline;
+}
+

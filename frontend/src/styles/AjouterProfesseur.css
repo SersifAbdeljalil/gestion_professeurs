@@ -70,6 +70,22 @@ form h1 {
 .infield {
     margin-bottom: 20px;
     width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 40px; /* Laisser de l'espace à droite pour l'icône */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px; /* Déplace l'icône à droite */
+    top: 50%; /* Centre verticalement */
+    transform: translateY(-50%); /* Ajuste le centrage */
+    padding-top: 5px; /* Ajoute un léger espace vers le haut */
+    cursor: pointer;
 }
 
 .infield input,

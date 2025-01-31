@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api"; // Assurez-vous que api.js est correctement configuré
 import { FiEye, FiEyeOff } from "react-icons/fi"; // Importer les icônes
-import "./AjouterProfesseur.css";
+import "../styles/AjouterProfesseur.css";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -88,17 +88,18 @@ const Login = () => {
                         />
                     </div>
                     <div className="infield password-field">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            name="mot_de_passe"
-                            placeholder="Mot de passe"
-                            onChange={handleChange}
-                            required
-                        />
-                        <span className="password-toggle" onClick={togglePassword}>
-                            {showPassword ? <FiEyeOff /> : <FiEye />} 
-                        </span>
+                       <input
+                             type={showPassword ? "text" : "password"}
+                             name="mot_de_passe"
+                             placeholder="Mot de passe"
+                             onChange={handleChange}
+                             required
+                           />
+                       <span className="password-toggle" onClick={togglePassword}>
+                        {showPassword ? <FiEyeOff /> : <FiEye />} 
+                       </span>
                     </div>
+
                     <div className="links-container">
                         <Link to="/forgot-password" className="link-button">
                             Mot de passe oublié ?
