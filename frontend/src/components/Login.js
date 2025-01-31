@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api"; // Assurez-vous que api.js est correctement configuré
+import { FiEye, FiEyeOff } from "react-icons/fi"; // Importer les icônes
 import "./AjouterProfesseur.css";
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
         email: "",
         mot_de_passe: ""
     });
+    const [showPassword, setShowPassword] = useState(false); // État pour basculer l'affichage du mot de passe
     const navigate = useNavigate();
 
     // Fonction pour mettre à jour l'état des champs de formulaire
@@ -21,22 +23,32 @@ const Login = () => {
         e.preventDefault();
         console.log("Données envoyées:", formData); // Vérification des données envoyées
 
-        try {
-            const response = await api.post("/auth/login", formData); // Correction de l'endpoint ici
+        // Vérifier si l'email et le mot de passe sont ceux de l'admin
+        if (formData.email === "admin@admin.com" && formData.mot_de_passe === "admin") {
+            localStorage.setItem("profId", 1); // ID fictif pour admin
+            navigate("/Admin"); // Rediriger vers Admin.js
+            return; // Empêche la soumission du formulaire normal
+        }
 
-            // Vérification de la réponse du serveur
+        try {
+            const response = await api.post("/auth/login", formData);
+
             if (response.status === 200) {
                 const userData = response.data.user;
-                console.log("🔹 Utilisateur connecté :", userData); // Vérifier ce que le backend renvoie
+                console.log("🔹 Utilisateur connecté :", userData);
 
                 if (userData && userData.id) {
-                    localStorage.setItem("profId", userData.id); // Stocker l'ID du professeur
-                    console.log("✅ ID stocké :", localStorage.getItem("profId")); // Vérifier si l'ID est bien enregistré
+                    localStorage.setItem("profId", userData.id);
+                    console.log("✅ ID stocké :", localStorage.getItem("profId"));
+
+                    if (userData.email === "admin@admin.com") {
+                        navigate("/Admin");
+                    } else {
+                        navigate("/ProfileProf");
+                    }
                 } else {
                     console.error("❌ Erreur : ID du professeur non trouvé !");
                 }
-
-                navigate("/ProfileProf");
             } else {
                 alert("Email ou mot de passe incorrect.");
             }
@@ -45,6 +57,11 @@ const Login = () => {
             console.error("Erreur de connexion :", errorMessage);
             alert(errorMessage || "Erreur lors de la connexion.");
         }
+    };
+
+    // Fonction pour basculer l'affichage du mot de passe
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -70,19 +87,23 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <div className="infield">
+                    <div className="infield password-field">
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             name="mot_de_passe"
                             placeholder="Mot de passe"
                             onChange={handleChange}
                             required
                         />
+                        <span className="password-toggle" onClick={togglePassword}>
+                            {showPassword ? <FiEyeOff /> : <FiEye />} 
+                        </span>
                     </div>
                     <div className="links-container">
-                        <Link to="/ajouter-professeur" className="link-button">
-                            S'inscrire !
+                        <Link to="/forgot-password" className="link-button">
+                            Mot de passe oublié ?
                         </Link>
+                
                     </div>
                     <button type="submit">Se connecter</button>
                 </form>
