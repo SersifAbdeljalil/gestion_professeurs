@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AjouterProfesseur from "./components/AjouterProfesseur";
 import Login from "./components/Login";
 import ProfileProf from "./components/ProfileProf";
+import ModifierProfil from "./components/ModifierProfil";
 
 const App = () => {
   const [teacherId, setTeacherId] = useState(null);
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/ajouter-professeur" element={<AjouterProfesseur />} />
           {/* Passer le teacherId récupéré dynamiquement dans ProfileProf */}
           <Route path="/ProfileProf" element={<ProfileProf />} />
+          <Route path="/modifierProfil/:id" element={<ModifierProfil />} />
         </Routes>
       </div>
     </Router>

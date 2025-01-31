@@ -1,88 +1,95 @@
 import React, { useEffect, useState } from "react";
-
+import "../styles/ProfileProf.css"; 
 const ProfileProf = () => {
-  const profId = localStorage.getItem("profId"); // Récupérer l'ID du professeur connecté
-  console.log("🔍 ID du professeur récupéré :", profId);
+  const profId = localStorage.getItem("profId");
   const [professeur, setProfesseur] = useState(null);
-  const [form, setForm] = useState({
-    nom: "",
-    prenom: "",
-    email: "",
-    telephone: "",
-    matiere: "",
-    statut: "",
-    photo: null,
-  });
 
   useEffect(() => {
     if (!profId) return;
 
-    fetch(`http://localhost:3001/api/modifierProf/${profId}`)
-      .then((res) => {
-        console.log("📡 Réponse HTTP :", res.status); // Vérifier si la requête est bonne
-        if (!res.ok) {
-          throw new Error("Erreur lors de la récupération des données");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setProfesseur(data);
-        setForm({ ...data, photo: null }); // Remplir le formulaire
-      })
-      .catch((err) => console.error("❌ Erreur :", err));
+    fetch(`http://localhost:3001/api/recupererProf/${profId}`)
+      .then((res) => res.json())
+      .then((data) => setProfesseur(data))
+      .catch((err) => console.error("Erreur :", err));
   }, [profId]);
-
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "file" ? files[0] : value,
-    }));
+  //fonction pour deconnexion
+  const handleLogout = () => {
+    localStorage.removeItem("profId"); // Supprime l'ID stocké
+    window.location.href = "/"; // Redirige vers la page de connexion
   };
+  
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      if (value !== null) formData.append(key, value);
-    });
-
-    try {
-      const response = await fetch(`http://localhost:3001/api/modifierProf/${profId}`, {
-        method: "PUT",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Erreur lors de la mise à jour.");
-      }
-
-      alert("✅ Mise à jour réussie !");
-    } catch (error) {
-      console.error("❌ Erreur :", error);
-      alert("❌ Échec de la mise à jour.");
-    }
-  };
+  if (!professeur) return <p>Chargement...</p>;
 
   return (
-    <div>
-      <h2>Profil du Professeur</h2>
-      {professeur ? (
-        <form onSubmit={handleUpdate}>
-          <input type="text" name="nom" value={form.nom} onChange={handleChange} placeholder="Nom" required />
-          <input type="text" name="prenom" value={form.prenom} onChange={handleChange} placeholder="Prénom" required />
-          <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Email" required />
-          <input type="text" name="telephone" value={form.telephone} onChange={handleChange} placeholder="Téléphone" required />
-          <input type="text" name="matiere" value={form.matiere} onChange={handleChange} placeholder="Matière" required />
-          <input type="text" name="statut" value={form.statut} onChange={handleChange} placeholder="Statut" required />
-          <input type="file" name="photo" onChange={handleChange} />
-          <button type="submit">Mettre à jour</button>
-        </form>
-      ) : (
-        <p>Chargement...</p>
-      )}
+    <div className="profile-container">
+      <div className="profile-card">
+        <div className="profile-header">
+          {/* Image de profil */}
+          <img
+  src={professeur.photo_profil ? `http://localhost:3001/uploads/${professeur.photo_profil}?t=${new Date().getTime()}` : "/default-profile.png"}
+  alt="Profile"
+  className="profile-photo"
+/>
+
+
+
+          {/* Bouton Modifier Profil */}
+          <button
+            className="edit-profile-btn"
+            onClick={() => window.location.href = `/ModifierProfil/${profId}`}
+          >
+            Modifier Profil
+          </button>
+        </div>
+
+        <h2>Mon Profil</h2>
+        <div className="profile-info">
+          <div className="profile-field">
+            <label>Nom:</label>
+            <span>{professeur.nom}</span>
+          </div>
+          <div className="profile-field">
+            <label>Prénom:</label>
+            <span>{professeur.prenom}</span>
+          </div>
+          <div className="profile-field">
+            <label>Téléphone:</label>
+            <span>{professeur.telephone}</span>
+          </div>
+          <div className="profile-field">
+            <label>Email:</label>
+            <span>{professeur.email}</span>
+          </div>
+          <div className="profile-field">
+            <label>Matières enseignées:</label>
+            <span>{professeur.matieres}</span>
+          </div>
+          <div className="profile-field">
+            <label>Statut:</label>
+            <span>{professeur.statut}</span>
+          </div>
+        </div>
+
+        {/* Lien pour générer la carte professionnelle */}
+        <h3>Carte Professionnelle</h3>
+        <div className="profile-info">
+          <div className="profile-field">
+            <a
+              href={`http://localhost:3001/api/cartes/${profId}/generate-pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Générer ma carte professionnelle
+            </a>
+          </div>
+        </div>
+
+        {/*deconnexipon*/}
+        <button className="logout-btn" onClick={handleLogout}> Déconnexion</button>
+      </div>
     </div>
+    
   );
 };
 

@@ -25,7 +25,7 @@ router.get("/:id/generate-pdf", async (req, res) => {
         const professeur = results[0];
 
         // Génération du QR Code
-        const qrCodeData = `http://localhost:3000/profile/${id}`;
+        const qrCodeData = `http://localhost:3000/ProfileProf/${id}`;
         const qrCodeImage = await QRCode.toDataURL(qrCodeData);
 
         // Création du PDF

@@ -1,51 +1,48 @@
 const express = require("express");
-const db = require("../db/connection");
+const db = require("../db/connection"); // Connexion MySQL
+const path = require("path");
+const multer = require("multer");
 
 const router = express.Router();
 
-// Récupérer un professeur par ID
-router.get("/:id", (req, res) => {
-    const { id } = req.params;
-    const query = "SELECT * FROM Professeurs WHERE id = ?";
-
-    db.query(query, [id], (err, results) => {
-        if (err) {
-            console.error("❌ Erreur SQL :", err);
-            return res.status(500).json({ error: "Erreur interne du serveur" });
-        }
-
-        if (results.length === 0) {
-            return res.status(404).json({ error: "Professeur non trouvé" });
-        }
-
-        res.json(results[0]);
-    });
+// 📌 Configuration de multer pour l'upload des fichiers
+const storage = multer.diskStorage({
+    destination: "./uploads/", // Assurez-vous que ce dossier existe
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
 });
 
-// Modifier un professeur
-router.put("/:id", (req, res) => {
-    const { id } = req.params;
-    const { nom, prenom, email, telephone, matiere, statut } = req.body;
+const upload = multer({ storage }); // Définition de `upload`
 
-    const query = `
+// ✅ Route pour modifier le profil d'un professeur
+router.put("/:id/modifier", upload.single("photo"), (req, res) => {
+    const { id } = req.params;
+    const { nom, prenom, email, telephone, matieres, statut } = req.body;
+    const photo_profil = req.file ? `/uploads/${req.file.filename}` : null;
+
+    if (!nom || !prenom || !email || !telephone) {
+        return res.status(400).json({ error: "Tous les champs sont requis !" });
+    }
+
+    const updateQuery = `
         UPDATE Professeurs 
-        SET nom = ?, prenom = ?, email = ?, telephone = ?, matiere = ?, statut = ?
-        WHERE id = ?;
+        SET nom = ?, prenom = ?, email = ?, telephone = ?, matieres = ?, statut = ?, photo_profil = COALESCE(?, photo_profil)
+        WHERE id = ?
     `;
 
-    db.query(query, [nom, prenom, email, telephone, matiere, statut, id], (err, result) => {
+    db.query(updateQuery, [nom, prenom, email, telephone, matieres, statut, photo_profil, id], (err, result) => {
         if (err) {
             console.error("❌ Erreur SQL :", err);
-            return res.status(500).json({ error: "Erreur interne du serveur" });
+            return res.status(500).json({ error: "Erreur serveur" });
         }
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: "Professeur non trouvé" });
         }
 
-        res.json({ message: "✅ Mise à jour réussie !" });
+        res.json({ message: "Profil mis à jour avec succès !" });
     });
 });
 
 module.exports = router;
-
