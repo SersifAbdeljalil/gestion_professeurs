@@ -12,6 +12,7 @@ const cartesRoutes = require("./routes/cartes");
 const recupererRoutes = require("./routes/recupererProf");
 const listProfesseursRoutes = require("./routes/listProfesseur");
 const importerProfesseursRoutes = require("./routes/importerProfesseurs");
+const forgotPasswordRoutes = require("./routes/ForgotPassword");
 const app = express();
 
 // Configuration de Multer pour gérer l'upload des fichiers
@@ -49,7 +50,7 @@ app.use("/api/recupererProf", recupererRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/importer-professeurs", importerProfesseursRoutes);
 app.use("/api/list-professeurs", listProfesseursRoutes);
-
+app.use("/api/password-reset", forgotPasswordRoutes);
 // Port et démarrage du serveur
 const PORT = 3001;
 app.listen(PORT, () => {

@@ -9,25 +9,22 @@ const Login = () => {
         email: "",
         mot_de_passe: ""
     });
-    const [showPassword, setShowPassword] = useState(false); // État pour basculer l'affichage du mot de passe
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    // Fonction pour mettre à jour l'état des champs de formulaire
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Fonction de gestion de l'envoi du formulaire
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Données envoyées:", formData); // Vérification des données envoyées
+        console.log("Données envoyées:", formData);
 
-        // Vérifier si l'email et le mot de passe sont ceux de l'admin
         if (formData.email === "admin@admin.com" && formData.mot_de_passe === "admin") {
-            localStorage.setItem("profId", 1); // ID fictif pour admin
-            navigate("/Admin"); // Rediriger vers Admin.js
-            return; // Empêche la soumission du formulaire normal
+            localStorage.setItem("profId", 1);
+            navigate("/Admin");
+            return;
         }
 
         try {
@@ -59,23 +56,16 @@ const Login = () => {
         }
     };
 
-    // Fonction pour basculer l'affichage du mot de passe
-    const togglePassword = () => {
-        setShowPassword(!showPassword);
-    };
-
     return (
-        <div className="container" id="container">
+        <div className="container">
             <div className="overlay-container">
                 <div className="overlay">
-                    <div className="overlay-panel overlay-left">
-                        <h1>Bienvenue</h1>
-                        <p>Connectez-vous pour accéder à votre tableau de bord.</p>
-                    </div>
+                    <h1>Bienvenue</h1>
+                    <p>Connectez-vous pour accéder à Compte.</p>
                 </div>
             </div>
 
-            <div className="form-container sign-up-container">
+            <div className="form-container">
                 <form onSubmit={handleSubmit}>
                     <h1>Connexion</h1>
                     <div className="infield">
@@ -88,23 +78,22 @@ const Login = () => {
                         />
                     </div>
                     <div className="infield password-field">
-                       <input
-                             type={showPassword ? "text" : "password"}
-                             name="mot_de_passe"
-                             placeholder="Mot de passe"
-                             onChange={handleChange}
-                             required
-                           />
-                       <span className="password-toggle" onClick={togglePassword}>
-                        {showPassword ? <FiEyeOff /> : <FiEye />} 
-                       </span>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="mot_de_passe"
+                            placeholder="Mot de passe"
+                            onChange={handleChange}
+                            required
+                        />
+                        <span className="password-icon" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <FiEyeOff /> : <FiEye />}
+                        </span>
                     </div>
 
                     <div className="links-container">
                         <Link to="/forgot-password" className="link-button">
                             Mot de passe oublié ?
                         </Link>
-                
                     </div>
                     <button type="submit">Se connecter</button>
                 </form>

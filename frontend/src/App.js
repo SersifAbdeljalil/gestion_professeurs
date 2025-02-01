@@ -7,11 +7,13 @@ import ModifierProfil from "./components/ModifierProfil";
 import Admin from "./components/Admin";
 import ImporterProfesseurs from "./components/ImporterProfesseurs";
 import ForgotPassword from "./components/ForgotPassword";
+import VerifyCode from "./components/VerifyCode";
+import ResetPassword from "./components/ResetPassword";
+
 const App = () => {
   const [teacherId, setTeacherId] = useState(null);
 
   useEffect(() => {
-    // Récupérer l'ID du professeur depuis localStorage après la connexion
     const storedTeacherId = localStorage.getItem("profId");
     if (storedTeacherId) {
       setTeacherId(storedTeacherId);
@@ -24,12 +26,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/ajouter-professeur" element={<AjouterProfesseur />} />
-          {/* Passer le teacherId récupéré dynamiquement dans ProfileProf */}
           <Route path="/ProfileProf" element={<ProfileProf />} />
           <Route path="/modifierProfil/:id" element={<ModifierProfil />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/importer-prof" element={<ImporterProfesseurs />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-code" element={<VerifyCode />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </div>
     </Router>
