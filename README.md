@@ -24,5 +24,5 @@
    a) Ouvrez un nouveau terminal pour éviter les conflits avec le frontend.
    b) Assurez-vous qu'aucun autre serveur n'est déjà lancé sur le port `3001`.
    c) Lancez le serveur backend en exécutant :
-
-     node server.js
+     1) cd backend 
+     2) node server.js
