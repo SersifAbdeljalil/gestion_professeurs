@@ -26,3 +26,21 @@
    c) Lancez le serveur backend en exécutant :
      1) cd backend 
      2) node server.js
+########pour cote base de donnees voici la requet utiliser :######
+CREATE DATABASE IF NOT EXISTS gestion_professeurs;
+USE gestion_professeurs;
+
+CREATE TABLE IF NOT EXISTS professeurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    telephone VARCHAR(15),
+    matieres TEXT,
+    statut ENUM('permanent', 'vacataire') NOT NULL,
+    photo_profil VARCHAR(255),
+    mot_de_passe VARCHAR(255) NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reset_code INT NULL
+);
+
