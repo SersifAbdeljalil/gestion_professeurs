@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaPlus, FaFileImport, FaPrint, FaSignOutAlt } from "react-icons/fa";
 import * as XLSX from "xlsx";
-import '../styles/Admin.css'; // Importer le CSS
+import { FaPrint } from "react-icons/fa"; // Import de l'icône
+import AdminLayout from "../layouts/AdminLayout"; // Import du layout
 
 const Admin = () => {
   const [professeurs, setProfesseurs] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfesseurs = async () => {
@@ -24,12 +22,8 @@ const Admin = () => {
     fetchProfesseurs();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("profId");
-    navigate("/");
-  };
-
-  const handleExportExcel = () => {
+  // Fonction d'exportation vers Excel
+  const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(professeurs);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Professeurs");
@@ -37,14 +31,10 @@ const Admin = () => {
   };
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>Liste des Professeurs</h1>
-        <button onClick={handleLogout} className="logout-button">
-          <FaSignOutAlt /> Déconnexion
-        </button>
-      </div>
-
+    <AdminLayout>
+      <h1>Liste des Professeurs</h1>
+      
+      {/* Tableau des professeurs */}
       <div className="table-container">
         <table className="prof-table">
           <thead>
@@ -68,22 +58,11 @@ const Admin = () => {
         </table>
       </div>
 
-      <div className="button-container">
-        <Link to="/ajouter-professeur">
-          <button className="add-button">
-            <FaPlus /> Ajouter Manuellement
-          </button>
-        </Link>
-        <Link to="/importer-prof">
-          <button className="import-button">
-            <FaFileImport /> Importer via Excel
-          </button>
-        </Link>
-        <button onClick={handleExportExcel} className="export-button">
-          <FaPrint /> Imprimer (Excel)
-        </button>
-      </div>
-    </div>
+      {/* Bouton d'exportation Excel */}
+      <button className="export-button" onClick={exportToExcel}>
+        <FaPrint /> Imprimer
+      </button>
+    </AdminLayout>
   );
 };
 

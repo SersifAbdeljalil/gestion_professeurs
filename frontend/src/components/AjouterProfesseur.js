@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importation des icônes
-import "../styles/AjouterProfesseur.css"
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import "../styles/AjouterProfesseur.css";
+import AdminLayout from "../layouts/AdminLayout"; // Importer le layout
 
 const AjouterProfesseur = () => {
     const [formData, setFormData] = useState({
@@ -16,23 +17,16 @@ const AjouterProfesseur = () => {
     });
     const [photo, setPhoto] = useState(null);
     const [passwordStrength, setPasswordStrength] = useState(0);
-    const [showPassword, setShowPassword] = useState(false); // Nouveau state pour gérer l'affichage du mot de passe
+    const [showPassword, setShowPassword] = useState(false); 
 
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         if (name === "mot_de_passe") {
-            const strength = calculatePasswordStrength(value);
-            setPasswordStrength(strength);
+            setPasswordStrength(calculatePasswordStrength(value));
         }
-
         setFormData({ ...formData, [name]: value });
-    };
-
-    const handleFileChange = (e) => {
-        setPhoto(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
@@ -52,6 +46,7 @@ const AjouterProfesseur = () => {
         }
     };
 
+    // ✅ Ajout de la fonction manquante
     const calculatePasswordStrength = (password) => {
         let strength = 0;
         if (password.length >= 8) strength += 1;
@@ -62,142 +57,63 @@ const AjouterProfesseur = () => {
         return strength;
     };
 
-    const getStrengthColor = () => {
-        if (passwordStrength <= 1) return "red";
-        if (passwordStrength === 2 || passwordStrength === 3) return "orange";
-        if (passwordStrength >= 4) return "green";
-    };
-
-    const handleRedirect = () => {
-        navigate("/login");
-    };
-
     return (
-        <div className="container" id="container">
-            <div className="overlay-container">
-                <div className="overlay">
-                    <div className="overlay-panel overlay-left">
+        <AdminLayout>
+            <div className="container">
+                <div className="overlay-container">
+                    <div className="overlay">
                         <h1>Ajout Manuel de Professeurs</h1>
                         <p>Saisissez manuellement les informations pour ajouter des professeurs.</p>
                     </div>
                 </div>
-            </div>
 
-            <div className="form-container sign-up-container">
-                <form onSubmit={handleSubmit}>
-                    <h1>Ajouter un Professeur</h1>
-                    <div className="infield">
-                        <input
-                            type="text"
-                            name="nom"
-                            placeholder="Nom"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="infield">
-                        <input
-                            type="text"
-                            name="prenom"
-                            placeholder="Prénom"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="infield">
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="infield">
-                        <input
-                            type="text"
-                            name="telephone"
-                            placeholder="Téléphone"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="infield">
-                        <input
-                            type="text"
-                            name="matieres"
-                            placeholder="Matières enseignées"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="infield">
-                        <select name="statut" onChange={handleChange}>
-                            <option value="permanent">Permanent</option>
-                            <option value="vacataire">Vacataire</option>
-                        </select>
-                    </div>
-
-                    {/* Champ mot de passe */}
-                    <div className="infield password-field">
-                        <input
-                            type={showPassword ? "text" : "password"} // Change le type en fonction de l'état
-                            name="mot_de_passe"
-                            placeholder="Mot de passe"
-                            onChange={handleChange}
-                            required
-                        />
-                        {/* Icône pour afficher/masquer le mot de passe */}
-                        <div className="password-icon" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                <div className="form-container">
+                    <form onSubmit={handleSubmit}>
+                        <h1>Ajouter un Professeur</h1>
+                        <div className="infield">
+                            <input type="text" name="nom" placeholder="Nom" onChange={handleChange} required />
                         </div>
-                        {/* Barre de progression */}
-                        <div
-                            style={{
-                                height: "5px",
-                                width: "100%",
-                                backgroundColor: "#e0e0e0",
-                                marginTop: "5px",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    height: "100%",
-                                    width: `${(passwordStrength / 5) * 100}%`,
-                                    backgroundColor: getStrengthColor(),
-                                    transition: "width 0.3s ease",
-                                }}
-                            ></div>
+                        <div className="infield">
+                            <input type="text" name="prenom" placeholder="Prénom" onChange={handleChange} required />
                         </div>
-                        <small
-                            style={{
-                                color: getStrengthColor(),
-                            }}
-                        >
-                            {passwordStrength <= 1
-                                ? "Mot de passe faible"
-                                : passwordStrength === 2 || passwordStrength === 3
-                                ? "Mot de passe moyen"
-                                : "Mot de passe fort"}
-                        </small>
-                    </div>
+                        <div className="infield">
+                            <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                        </div>
+                        <div className="infield">
+                            <input type="text" name="telephone" placeholder="Téléphone" onChange={handleChange} />
+                        </div>
+                        <div className="infield">
+                            <input type="text" name="matieres" placeholder="Matières enseignées" onChange={handleChange} />
+                        </div>
+                        <div className="infield">
+                            <select name="statut" onChange={handleChange}>
+                                <option value="permanent">Permanent</option>
+                                <option value="vacataire">Vacataire</option>
+                            </select>
+                        </div>
 
-                    <div className="infield">
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            accept="image/*"
-                        />
-                    </div>
-                    <div className="links-container">
-                        <Link to="/Admin" className="link-button">
-                            Page Principale 
-                        </Link>
-                    </div>
-                    <button type="submit" disabled={passwordStrength < 3}>
-                        Ajouter
-                    </button>
-                </form>
+                        {/* Champ mot de passe */}
+                        <div className="infield password-field">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="mot_de_passe"
+                                placeholder="Mot de passe"
+                                onChange={handleChange}
+                                required
+                            />
+                            <div className="password-icon" onClick={() => setShowPassword(!showPassword)}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </div>
+                        </div>
+
+                        <div className="infield">
+                            <input type="file" onChange={(e) => setPhoto(e.target.files[0])} accept="image/*" />
+                        </div>
+                        <button type="submit" disabled={passwordStrength < 3}>Ajouter</button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </AdminLayout>
     );
 };
 
