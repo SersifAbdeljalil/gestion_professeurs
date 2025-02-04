@@ -1,113 +1,149 @@
-/* ✅ Centrage global */
+/* ProfileProf.css */
 .profile-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f4f4f4;
+  padding: 20px;
 }
 
-/* ✅ Carte du profil */
 .profile-card {
   background: white;
   border-radius: 12px;
   padding: 20px;
-  width: 400px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  width: 100%;
+  max-width: 400px;
 }
 
-/* ✅ En-tête du profil */
-.profile-header {
+.header-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
+.profile-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
 
-/* ✅ Photo de profil */
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B4513;
+}
+
 .profile-photo {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ccc;
+  border: 2px solid #8B4513;
+  margin-bottom: 20px;
 }
 
-/* ✅ Bouton "Modifier Profil" */
-.edit-profile-btn {
-  background-color: #8B4513; /* Marron */
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  margin-top: 5px; /* Ajustement de l’espace */
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-/* ✅ Informations du profil */
 .profile-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-/* ✅ Ajustement des labels et valeurs */
 .profile-field {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
-  margin-bottom: 4px;
-  gap: 2px; /* Réduit l’espace entre label et valeur */
-  align-items: center; /* Alignement parfait des champs */
+  margin-bottom: 8px;
+  gap: 8px;
 }
 
 .profile-field label {
   font-weight: bold;
   color: #555;
-  margin-right: 2px; /* Écart réduit */
-  white-space: nowrap; /* Évite les sauts de ligne inutiles */
+  min-width: 180px; /* Largeur fixe pour tous les labels */
+  white-space: nowrap;
+  text-align: left;
 }
 
 .profile-field span {
   color: #222;
-  flex-grow: 1;
-  text-align: left; /* Alignement des valeurs */
+  text-align: left;
+  flex: 1;
+  padding-left: 10px;
+}
+/* Styles pour la section carte professionnelle */
+.professional-card-section {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
 }
 
-/* ✅ Lien "Générer ma carte professionnelle" en marron */
-.profile-card-link {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.profile-card-link a {
-  font-size: 12px;
-  display: block;
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #8B4513;
+  margin-bottom: 15px;
+}
+
+.card-icon {
+  color: #8B4513;
+}
+
+.card-preview {
+  border: 1px solid #8B4513;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: white;
   text-align: center;
-  text-decoration: underline;
-  
 }
 
-
-.profile-field a:hover {
-  text-decoration: underline;
+.preview-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #8B4513;
+  margin: 0 0 5px 0;
 }
 
-/* ✅ Bouton Déconnexion */
-.logout-btn {
+.preview-title {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 0 3px 0;
+}
+
+.preview-subject {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0;
+}
+
+.download-card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #8B4513;
   color: white;
-  border: none;
-  padding: 8px 12px;
+  padding: 10px;
   border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+}
+
+.download-card-button:hover {
+  background-color: #9b5423;
 }

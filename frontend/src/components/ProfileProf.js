@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import "../styles/ProfileProf.css"; 
+import { LogOut, Edit, CreditCard } from "lucide-react";
+import "../styles/ProfileProf.css";
+
 const ProfileProf = () => {
   const profId = localStorage.getItem("profId");
   const [professeur, setProfesseur] = useState(null);
 
   useEffect(() => {
     if (!profId) return;
-
     fetch(`http://localhost:3001/api/recupererProf/${profId}`)
       .then((res) => res.json())
       .then((data) => setProfesseur(data))
       .catch((err) => console.error("Erreur :", err));
   }, [profId]);
-  //fonction pour deconnexion
+
   const handleLogout = () => {
-    localStorage.removeItem("profId"); // Supprime l'ID stocké
-    window.location.href = "/"; // Redirige vers la page de connexion
+    localStorage.removeItem("profId");
+    window.location.href = "/";
   };
-  
 
   if (!professeur) return <p>Chargement...</p>;
 
@@ -25,26 +25,30 @@ const ProfileProf = () => {
     <div className="profile-container">
       <div className="profile-card">
         <div className="profile-header">
-        <div className="profile-title">
-          <h2>Mon Profil</h2>
+          <div className="header-container">
+            <h2 className="profile-title">Mon Profil</h2>
+            <div className="header-buttons">
+              <button
+                className="icon-button"
+                onClick={() => window.location.href = `/ModifierProfil/${profId}`}
+                title="Modifier Profil"
+              >
+                <Edit size={20} />
+              </button>
+              <button
+                className="icon-button"
+                onClick={handleLogout}
+                title="Déconnexion"
+              >
+                <LogOut size={20} />
+              </button>
             </div>
-
-          {/* Image de profil */}
+          </div>
           <img
-               src={`http://localhost:3001${professeur.photo_profil}` || "/default-profile.png"}
-                 alt="Profile"
-                 className="profile-photo"/>
-
-
-
-
-          {/* Bouton Modifier Profil */}
-          <button
-            className="edit-profile-btn"
-            onClick={() => window.location.href = `/ModifierProfil/${profId}`}
-          >
-            Modifier Profil
-          </button>
+            src={`http://localhost:3001${professeur.photo_profil}` || "/default-profile.png"}
+            alt="Profile"
+            className="profile-photo"
+          />
         </div>
 
         <div className="profile-info">
@@ -74,24 +78,29 @@ const ProfileProf = () => {
           </div>
         </div>
 
-        {/* Lien pour générer la carte professionnelle */}
-        <h3>Carte Professionnelle</h3>
-        <p>Accédez à  ce lien pour imprimer votre carte professionnelle</p>
-        <div className="profile-info">
-         <div className="profile-card-link">
-               <a
-                 href={`http://localhost:3001/api/cartes/${profId}/generate-pdf`}
-                   target="_blank"
-                     rel="noopener noreferrer" >
-                               Carte professionnelle</a>
+        <div className="professional-card-section">
+          <div className="card-title">
+            <CreditCard size={20} className="card-icon" />
+            <span>Carte Professionnelle</span>
           </div>
+          <div className="card-preview">
+            <div className="preview-info">
+              <p className="preview-name">{professeur.prenom} {professeur.nom}</p>
+              <p className="preview-title">Professeur</p>
+              <p className="preview-subject">{professeur.matieres}</p>
+            </div>
+          </div>
+          <a
+            href={`http://localhost:3001/api/cartes/${profId}/generate-pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="download-card-button"
+          >
+            Télécharger ma carte
+          </a>
         </div>
-
-        {/*deconnexipon*/}
-        <button className="logout-btn" onClick={handleLogout}> Déconnexion</button>
       </div>
     </div>
-    
   );
 };
 
