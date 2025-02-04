@@ -32,30 +32,31 @@ const Admin = () => {
 
   return (
     <AdminLayout>
-      <h1>Liste des Professeurs</h1>
-      
       {/* Tableau des professeurs */}
       <div className="table-container">
-        <table className="prof-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Email</th>
-              <th>Statut</th>
-            </tr>
-          </thead>
-          <tbody>
-            {professeurs.map((prof, index) => (
-              <tr key={index}>
-                <td>{prof.nom}</td>
-                <td>{prof.prenom}</td>
-                <td>{prof.email}</td>
-                <td>{prof.statut}</td>
+        <h2 className="list-title">Liste des Professeurs</h2>
+        <div className="table-wrapper">
+          <table className="prof-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Statut</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {professeurs.map((prof, index) => (
+                <tr key={index}>
+                  <td>{prof.nom}</td>
+                  <td>{prof.prenom}</td>
+                  <td>{prof.email}</td>
+                  <td>{prof.statut}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Bouton d'exportation Excel */}
