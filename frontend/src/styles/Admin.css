@@ -2,13 +2,14 @@
 .dashboard-container {
   display: flex;
   height: 100vh;
+  font-family: "Times New Roman", serif; /* Police appliquée à tout le site */
 }
 
 /* Barre latérale fixe */
 .sidebar {
   width: 250px;
-  height: 100vh; /* Prend toute la hauteur de la fenêtre */
-  position: fixed; /* Fixe le menu à gauche */
+  height: 100vh;
+  position: fixed;
   left: 0;
   top: 0;
   background-color: #b38773;
@@ -16,7 +17,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Garde déconnexion en bas */
+  justify-content: space-between;
 }
 
 .sidebar-menu {
@@ -26,28 +27,31 @@
 }
 
 .logout-container {
-  margin-top: auto; /* Garde "Déconnexion" en bas */
+  margin-top: auto;
 }
 
 .sidebar h2 {
   text-align: center;
 }
 
+/* ---- Navigation Sidebar ---- */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
+  color: white !important; /* Texte en blanc */
   text-decoration: none;
   padding: 10px;
   border-radius: 5px;
   transition: background 0.3s;
+  font-family: "Times New Roman", serif;
 }
 
 .nav-item:hover {
   background-color: #ac643e;
 }
 
+/* Bouton de déconnexion */
 .logout-button {
   background: none;
   border: none;
@@ -55,52 +59,83 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
+  font-family: "Times New Roman", serif;
 }
 
 .logout-button:hover {
   background-color: #ac643e;
 }
 
-/* Contenu principal décalé */
+/* ---- Contenu principal ---- */
 .main-content {
-  margin-left: 250px; /* Décale le contenu pour éviter qu'il soit sous la sidebar */
-  padding: 20px;
-  flex-grow: 1;
-  background-color: #f8f9fa;
-}
-
-.main-content h1 {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
+  height: 100vh;
+  padding-left: 250px;
+  background-color: #f8f9fa;
+  font-family: "Times New Roman", serif;
 }
 
+/* ---- Titres ---- */
+/* ---- Titre centré ---- */
+.list-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
 
-/* Table des professeurs */
+/* ---- Conteneur du tableau avec scroll et largeur augmentée ---- */
 .table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   margin-top: 20px;
-  overflow-x: auto;
 }
 
+/* ---- Wrapper avec défilement et en-tête fixe ---- */
+.table-wrapper {
+  max-height: 500px; /* Augmenter la hauteur pour afficher plus de lignes */
+  overflow-y: auto;
+  width: 90%;
+  max-width: 1200px; /* Augmente la largeur du tableau */
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  background: white;
+  border: 1px solid #ddd;
+}
+
+/* ---- Tableau ---- */
 .prof-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  table-layout: fixed; /* Fixe la taille des colonnes */
 }
 
-.prof-table th, .prof-table td {
-  padding: 12px;
-  text-align: left;
-}
-
-.prof-table th {
+/* ---- Fixer l'en-tête du tableau ---- */
+.prof-table thead tr {
+  position: sticky;
+  top: 0;
   background-color: #ac643e;
   color: white;
+  font-weight: bold;
+  z-index: 10;
 }
 
+/* ---- Style des cellules ---- */
+.prof-table th,
+.prof-table td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+/* ---- Alternance des couleurs ---- */
 .prof-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -108,18 +143,23 @@
 .prof-table tr:hover {
   background-color: #f1f1f1;
 }
+
+/* ---- Bouton d'exportation Excel ---- */
 .export-button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 10px;
   background-color: #b38773;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 12px 18px;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 10px;
+  transition: background 0.3s;
+  font-family: "Times New Roman", serif;
 }
 
 .export-button:hover {
