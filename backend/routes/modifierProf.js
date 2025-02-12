@@ -1,13 +1,13 @@
 const express = require("express");
-const db = require("../db/connection"); // Connexion MySQL
+const db = require("../db/connection"); 
 const path = require("path");
 const multer = require("multer");
 
 const router = express.Router();
 
-// 📌 Configuration de multer pour l'upload des fichiers
+//  Configuration de multer pour l'upload des fichiers
 const storage = multer.diskStorage({
-    destination: "./uploads/", // Assurez-vous que ce dossier existe
+    destination: "./uploads/", 
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     },
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage }); // Définition de `upload`
 
-// ✅ Route pour modifier le profil d'un professeur
+// Route pour modifier le profil d'un professeur
 router.put("/:id/modifier", upload.single("photo"), (req, res) => {
     const { id } = req.params;
     const { nom, prenom, email, telephone, matieres, statut } = req.body;

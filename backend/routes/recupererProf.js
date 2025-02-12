@@ -5,9 +5,8 @@ const db = require("../db/connection");
 
 const router = express.Router();
 
-/**
- * 📌 Récupérer un professeur par ID
- */
+
+  //Récupérer un professeur par ID
 router.get("/:id", (req, res) => {
     const { id } = req.params;
 
@@ -20,7 +19,7 @@ router.get("/:id", (req, res) => {
 
     db.query(query, [id], (err, results) => {
         if (err) {
-            console.error("❌ Erreur SQL :", err);
+            console.error(" Erreur SQL :", err);
             return res.status(500).json({ error: "Erreur interne du serveur" });
         }
 
@@ -28,7 +27,7 @@ router.get("/:id", (req, res) => {
             return res.status(404).json({ error: "Professeur non trouvé" });
         }
 
-        console.log("📡 Professeur récupéré :", results[0]);
+        console.log(" Professeur récupéré :", results[0]);
         res.json(results[0]);
     });
 });

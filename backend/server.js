@@ -35,16 +35,16 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Connexion à la base de données
 db.connect((err) => {
     if (err) {
-        console.error("❌ Erreur de connexion à la base de données :", err);
+        console.error(" Erreur de connexion à la base de données :", err);
         process.exit(1);
     }
-    console.log("✅ Connexion à la base de données réussie !");
+    console.log(" Connexion à la base de données réussie !");
 });
 
 // Définir les routes avec middleware d'upload
 app.use("/api/professeurs", professeursRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/modifierProf", modifierRoutes); // Cette route va maintenant gérer les uploads correctement
+app.use("/api/modifierProf", modifierRoutes); 
 app.use("/api/cartes", cartesRoutes);
 app.use("/api/recupererProf", recupererRoutes);
 app.use("/uploads", express.static("uploads"));
@@ -54,5 +54,5 @@ app.use("/api/password-reset", forgotPasswordRoutes);
 // Port et démarrage du serveur
 const PORT = 3001;
 app.listen(PORT, () => {
-    console.log(`🚀 Backend running on http://localhost:${PORT}`);
+    console.log(` Backend running on http://localhost:${PORT}`);
 });

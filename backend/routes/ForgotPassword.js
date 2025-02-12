@@ -10,8 +10,8 @@ const router = express.Router();
 const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-        user: "sersif.a366@ucd.ac.ma", // Remplacez par votre email
-        pass: "qrdx rpza ozyf apfg ", // Remplacez par votre mot de passe
+        user: "sersif.a366@ucd.ac.ma", 
+        pass: "qrdx rpza ozyf apfg ", 
     },
 });
 

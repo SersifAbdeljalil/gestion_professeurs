@@ -30,7 +30,7 @@ router.get("/:id/generate-pdf", async (req, res) => {
         const qrCodeData = `http://localhost:3000/ProfileProf/${id}`;
         const qrCodeImage = await QRCode.toDataURL(qrCodeData);
 
-        // Création du PDF avec une taille de carte de crédit standard (85.6 x 53.98 mm)
+        // Création du PDF avec une taille de carte  standard (85.6 x 53.98 mm)
         const doc = new PDFDocument({
             size: [242.65, 153.37], // Conversion de mm en points (1 point = 0.3528 mm)
             margins: {
@@ -119,7 +119,7 @@ router.get("/:id/generate-pdf", async (req, res) => {
             }
         } else {
             // Version sans photo
-            // ... (même mise en page mais avec un placeholder pour la photo)
+            
         }
 
         doc.end();
