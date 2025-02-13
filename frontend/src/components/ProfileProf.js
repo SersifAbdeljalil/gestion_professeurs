@@ -26,7 +26,7 @@ const ProfileProf = () => {
       <div className="profile-card">
         <div className="profile-header">
           <div className="header-container">
-            <h2 className="profile-title">Mon Profil</h2>
+            <h2 className="profile-title">Bienvenue </h2>
             <div className="header-buttons">
               <button
                 className="icon-button"

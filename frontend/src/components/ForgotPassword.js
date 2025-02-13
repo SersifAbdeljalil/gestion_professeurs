@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
-import "../styles/ForgotPassword.css"; // Importation du style commun
+import "../styles/ForgotPassword.css"; 
+import Header from './Header';
+import Footer from './Footer';
+import '../styles/Accueil.css';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
@@ -24,11 +27,13 @@ const ForgotPassword = () => {
     };
 
     return (
+        <div className="app-container">
+        <Header />
+        <main className="login-main">
         <div className="container">
             <div className="overlay-container">
                 <div className="overlay">
-                    <h1>Mot de passe oublié</h1>
-                    <p>Entrez votre email pour recevoir un code de réinitialisation.</p>
+                    
                 </div>
             </div>
 
@@ -54,6 +59,9 @@ const ForgotPassword = () => {
                 {message && <p>{message}</p>}
             </div>
         </div>
+        </main>
+      <Footer />
+    </div>
     );
 };
 

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import "../styles/AjouterProfesseur.css"; // Import du fichier CSS
-import AdminLayout from "../layouts/AdminLayout"; // Importer le layout
+import "../styles/AjouterProfesseur.css"; 
+import AdminLayout from "../layouts/AdminLayout"; 
 
 const ImporterProfesseurs = () => {
     const [file, setFile] = useState(null);
@@ -40,9 +40,9 @@ const ImporterProfesseurs = () => {
    
 
     return (
-        <AdminLayout>  {/* ✅ Ajout de AdminLayout ici */}
+        <AdminLayout>  
             <div className="container">
-                <div className="overlay-container">
+                <div className="Ioverlay-container">
                     <div className="overlay">
                         <h1>Importation de Professeurs</h1>
                         <p>Importez un fichier Excel pour ajouter des professeurs.</p>

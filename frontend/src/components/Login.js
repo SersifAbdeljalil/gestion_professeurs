@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import api from "../services/api"; // Assurez-vous que api.js est correctement configuré
-import { FiEye, FiEyeOff } from "react-icons/fi"; // Importer les icônes
+import api from "../services/api"; 
+import { FiEye, FiEyeOff } from "react-icons/fi"; 
 import "../styles/AjouterProfesseur.css";
+import Header from './Header';
+import Footer from './Footer';
+import '../styles/Accueil.css';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -36,7 +39,7 @@ const Login = () => {
 
                 if (userData && userData.id) {
                     localStorage.setItem("profId", userData.id);
-                    console.log("✅ ID stocké :", localStorage.getItem("profId"));
+                    console.log(" ID stocké :", localStorage.getItem("profId"));
 
                     if (userData.email === "admin@admin.com") {
                         navigate("/Admin");
@@ -44,7 +47,7 @@ const Login = () => {
                         navigate("/ProfileProf");
                     }
                 } else {
-                    console.error("❌ Erreur : ID du professeur non trouvé !");
+                    console.error(" Erreur : ID du professeur non trouvé !");
                 }
             } else {
                 alert("Email ou mot de passe incorrect.");
@@ -57,12 +60,12 @@ const Login = () => {
     };
 
     return (
+        <div className="app-container">
+        <Header />
+        <main className="login-main">
         <div className="container">
             <div className="overlay-container">
-                <div className="overlay">
-                    <h1>Bienvenue</h1>
-                    <p>Connectez-vous pour accéder à Compte.</p>
-                </div>
+                
             </div>
 
             <div className="form-container">
@@ -99,6 +102,9 @@ const Login = () => {
                 </form>
             </div>
         </div>
+        </main>
+      <Footer />
+    </div>
     );
 };
 

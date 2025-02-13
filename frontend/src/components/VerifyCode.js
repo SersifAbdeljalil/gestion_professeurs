@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation ,Link} from "react-router-dom";
 import api from "../services/api";
-import "../styles/ForgotPassword.css"; // Applique le même style que ForgotPassword.css
-
+import "../styles/ForgotPassword.css"; 
+import Header from './Header';
+import Footer from './Footer';
+import '../styles/Accueil.css';
 const VerifyCode = () => {
     const [code, setCode] = useState("");
     const [message, setMessage] = useState("");
@@ -21,8 +23,11 @@ const VerifyCode = () => {
     };
 
     return (
+        <div className="app-container">
+        <Header />
+        <main className="login-main">
         <div className="container">
-            <div className="overlay-container">
+            <div className="Ioverlay-container">
                 <div className="overlay">
                     <h1>Vérifier le Code</h1>
                     <p>Entrez le code à 6 chiffres que vous avez reçu pour réinitialiser votre mot de passe.</p>
@@ -51,6 +56,9 @@ const VerifyCode = () => {
                 {message && <p>{message}</p>}
             </div>
         </div>
+        </main>
+      <Footer />
+    </div>
     );
 };
 

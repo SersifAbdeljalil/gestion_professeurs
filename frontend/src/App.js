@@ -10,6 +10,8 @@ import ForgotPassword from "./components/ForgotPassword";
 import VerifyCode from "./components/VerifyCode";
 import ResetPassword from "./components/ResetPassword";
 
+
+
 const App = () => {
   const [teacherId, setTeacherId] = useState(null);
 
@@ -25,6 +27,7 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<Login />} />
+          
           <Route path="/ajouter-professeur" element={<AjouterProfesseur />} />
           <Route path="/ProfileProf" element={<ProfileProf />} />
           <Route path="/modifierProfil/:id" element={<ModifierProfil />} />

@@ -15,7 +15,7 @@ const ModifierProfil = () => {
     const [photo, setPhoto] = useState(null);
     const navigate = useNavigate();
 
-    // 🔹 Récupération de l'ID du professeur connecté depuis localStorage
+    //  Récupération de l'ID du professeur connecté depuis localStorage
     const profId = localStorage.getItem("profId");
 
     useEffect(() => {
@@ -49,7 +49,7 @@ const ModifierProfil = () => {
         .then((response) => response.json())
         .then(() => {
             alert("Mise à jour réussie !");
-            navigate("/ProfileProf"); // 🔹 Redirection vers la page de profil après modification
+            navigate("/ProfileProf"); 
         })
         .catch((error) => {
             console.error("Erreur lors de la mise à jour du profil", error);
@@ -59,7 +59,7 @@ const ModifierProfil = () => {
 
     return (
         <div className="modifier-profile">
-            <h1>Modifier le profil de {professeur.nom} {professeur.prenom}</h1>
+            <h1> le profil de {professeur.nom} {professeur.prenom}</h1>
             <form onSubmit={handleUpdate}>
                 <input type="text" value={professeur.nom} onChange={(e) => setProfesseur({ ...professeur, nom: e.target.value })} placeholder="Nom" />
                 <input type="text" value={professeur.prenom} onChange={(e) => setProfesseur({ ...professeur, prenom: e.target.value })} placeholder="Prénom" />

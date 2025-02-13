@@ -1,27 +1,35 @@
 import React, { useState } from "react";
-import { useLocation,Link } from "react-router-dom";
+import { useLocation,Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importation des icônes
-import "../styles/ForgotPassword.css"; // Assurez-vous d'importer le style correct
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import "../styles/ForgotPassword.css"; 
+import Header from './Header';
+import Footer from './Footer';
+import '../styles/Accueil.css';
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
     const [passwordStrength, setPasswordStrength] = useState(0);
-    const [showPassword, setShowPassword] = useState(false); // Nouveau state pour afficher/masquer le mot de passe
+    const [showPassword, setShowPassword] = useState(false); //  state pour afficher/masquer le mot de passe
     const location = useLocation();
     const email = location.state?.email || "";
     const code = location.state?.code || "";
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await api.post("/password-reset/reset-password", { email, code, newPassword });
-            setMessage("Mot de passe réinitialisé avec succès !");
-        } catch (error) {
-            setMessage(error.response?.data.error || "Erreur.");
-        }
-    };
+    const navigate = useNavigate(); 
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        await api.post("/password-reset/reset-password", { email, code, newPassword });
+        setMessage("Mot de passe réinitialisé avec succès !");
+        setTimeout(() => {
+            navigate("/"); // Redirection vers la page de connexion
+        }, 2000); // Attend 2 secondes pour afficher le message avant de rediriger
+    } catch (error) {
+        setMessage(error.response?.data.error || "Erreur.");
+    }
+};
 
     const handlePasswordChange = (e) => {
         const password = e.target.value;
@@ -46,8 +54,11 @@ const ResetPassword = () => {
     };
 
     return (
+        <div className="app-container">
+        <Header />
+        <main className="login-main">
         <div className="container">
-            <div className="overlay-container">
+            <div className="Ioverlay-container">
                 <div className="overlay">
                     <div className="overlay-panel overlay-left">
                         <h1>Réinitialiser le Mot de Passe</h1>
@@ -113,6 +124,9 @@ const ResetPassword = () => {
                 {message && <p>{message}</p>}
             </div>
         </div>
+        </main>
+      <Footer />
+    </div>
     );
 };
 

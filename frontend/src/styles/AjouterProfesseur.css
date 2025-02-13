@@ -14,15 +14,36 @@ body {
 }
 
 .container {
+    margin-top: 50px; /* Ajuste selon la hauteur du header */
     display: flex;
     width: 900px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     background-color: white;
+    
+}
+.Pcontainer {
+    display: flex;
+    width: 900px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    
 }
 
 .overlay-container {
+    flex: 1;
+    background: linear-gradient(to right, #ac643e, #924a28);
+    color: #ac643e;
+    display: flex;
+    padding: 30px;
+    background-image: url('../images/logo.jpg'); /* Remplace par le bon chemin */
+    background-size: cover;
+    background-position: center;
+}
+.Ioverlay-container {
     flex: 1;
     background: linear-gradient(to right, #ac643e, #924a28);
     color: #fff;
@@ -110,6 +131,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+    margin-bottom: 20px;
 }
 
 button:hover {

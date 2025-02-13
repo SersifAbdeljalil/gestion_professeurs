@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHome, FaPlus, FaFileImport, FaSignOutAlt } from "react-icons/fa";
-import "../styles/Admin.css"; // Garde le même style
+import "../styles/Admin.css"; 
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();

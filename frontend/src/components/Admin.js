@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
-import { FaPrint } from "react-icons/fa"; // Import de l'icône
-import AdminLayout from "../layouts/AdminLayout"; // Import du layout
+import { FaPrint } from "react-icons/fa"; 
+import AdminLayout from "../layouts/AdminLayout"; 
 
 const Admin = () => {
   const [professeurs, setProfesseurs] = useState([]);

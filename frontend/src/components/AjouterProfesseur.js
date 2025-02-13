@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 import "../styles/AjouterProfesseur.css";
-import AdminLayout from "../layouts/AdminLayout"; // Importer le layout
+import AdminLayout from "../layouts/AdminLayout"; 
 
 const AjouterProfesseur = () => {
     const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const AjouterProfesseur = () => {
         }
     };
 
-    // ✅ Ajout de la fonction manquante
+    //  Ajout de la fonction manquante
     const calculatePasswordStrength = (password) => {
         let strength = 0;
         if (password.length >= 8) strength += 1;
@@ -59,12 +59,9 @@ const AjouterProfesseur = () => {
 
     return (
         <AdminLayout>
-            <div className="container">
+            <div className="Pcontainer">
                 <div className="overlay-container">
-                    <div className="overlay">
-                        <h1>Ajout Manuel de Professeurs</h1>
-                        <p>Saisissez manuellement les informations pour ajouter des professeurs.</p>
-                    </div>
+                    
                 </div>
 
                 <div className="form-container">
