@@ -33,7 +33,7 @@ router.put("/:id/modifier", upload.single("photo"), (req, res) => {
 
     db.query(updateQuery, [nom, prenom, email, telephone, matieres, statut, photo_profil, id], (err, result) => {
         if (err) {
-            console.error("❌ Erreur SQL :", err);
+            console.error(" Erreur SQL :", err);
             return res.status(500).json({ error: "Erreur serveur" });
         }
 
