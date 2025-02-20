@@ -1,4 +1,3 @@
-// Frontend: Admin.jsx
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { FaPrint, FaIdCard } from "react-icons/fa";
