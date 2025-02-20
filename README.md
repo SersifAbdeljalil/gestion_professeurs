@@ -52,13 +52,15 @@ Lancez le serveur backend :
 
 **En tant qu'Administrateur**
 
-Inscription en tant qu'admin (E-mail : **admin@admin.com**, Mot de passe : **admin**).
+-authentification  en tant qu'admin (E-mail : **admin@admin.com**, Mot de passe : **admin**).
 
 -Page d'accueil affichant la liste complète des professeurs avec leurs informations.
 
--Impression de la carte professionnelle des professeurs.
+-Impression des cartes professionnelles des professeurs.
 
--Importation d'une liste de professeurs.
+-Importation d'une liste des professeurs.
+
+-Exporter la  liste des professeurs.
 
 -Ajout manuel d'un professeur.
 
@@ -66,7 +68,7 @@ Inscription en tant qu'admin (E-mail : **admin@admin.com**, Mot de passe : **adm
 
 -Consulter et modifier ses informations personnelles.
 
--Exporter sa carte professionnelle.
+-Imprimer sa carte professionnelle.
 
 -Changer son mot de passe.
 
