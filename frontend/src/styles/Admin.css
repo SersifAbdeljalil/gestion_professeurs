@@ -165,3 +165,43 @@
 .export-button:hover {
   background-color: #ac643e;
 }
+
+/* télécharger carte professiolle*/
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.download-cards-button, .download-card-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #004d40;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-cards-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.download-card-button {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.logo-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.admin-logo {
+  max-width: 100%;
+  height: auto;
+}

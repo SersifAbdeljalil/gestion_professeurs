@@ -12,175 +12,209 @@ const imagesPath = path.join(__dirname, "../../frontend/src/images");
 const tempPath = path.join(__dirname, "..", "temp");
 
 if (!fs.existsSync(tempPath)) {
-    fs.mkdirSync(tempPath);
+    fs.mkdirSync(tempPath, { recursive: true });
 }
 
-router.get("/:id/generate-pdf", async (req, res) => {
-    const { id } = req.params;
-    let tempPhotoPath = null;
+const CONFIG = {
+    CARD_WIDTH: 400,
+    CARD_HEIGHT: 250,
+    BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
+    API_URL: process.env.API_URL || 'http://localhost:3001',
+    COLORS: {
+        background: "#004d40",
+        accent: "#996515",
+        white: "#FFFFFF"
+    }
+};
 
-    try {
-        const query = "SELECT * FROM Professeurs WHERE id = ?";
-        const [results] = await new Promise((resolve, reject) => {
-            db.query(query, [id], (err, results) => {
-                if (err) reject(err);
-                else resolve([results]);
-            });
+async function generateCardContent(doc, professeur, isFirstPage = true) {
+    if (!isFirstPage) {
+        doc.addPage();
+    }
+
+    // Background
+    doc.rect(0, 0, CONFIG.CARD_WIDTH, CONFIG.CARD_HEIGHT)
+       .fill(CONFIG.COLORS.background);
+
+    // Diagonal accent
+    doc.save()
+       .moveTo(250, 0)
+       .lineTo(CONFIG.CARD_WIDTH, 0)
+       .lineTo(CONFIG.CARD_WIDTH, 100)
+       .fill(CONFIG.COLORS.accent);
+
+    // White center rectangle - garde la position originale
+    doc.rect(50, 70, 250, 40)
+       .fill(CONFIG.COLORS.white);
+
+    // Logo
+    const logoPath = path.join(imagesPath, "FS.png");
+    if (fs.existsSync(logoPath)) {
+        doc.image(logoPath, 20, 15, {
+            width: 40,
+            height: 40
         });
+    }
 
-        if (results.length === 0) {
+    // Header text
+    doc.font("Helvetica-Bold")
+       .fontSize(14)
+       .fillColor(CONFIG.COLORS.white)
+       .text("Faculté des sciences", 70, 15)
+       .fontSize(12)
+       .text("El jadida", 70, 35);
+
+    // UCD centré dans le triangle
+    doc.fontSize(14)
+       .text("UCD", 300, 30, { 
+           width: 80,
+           align: 'center'
+       });
+
+    // Professor details
+    doc.fontSize(12)
+       .text(`${professeur.nom} ${professeur.prenom}`, 20, 130);
+
+    // Titre ENSEIGNANT CHERCHEUR - même position qu'avant
+    doc.font("Helvetica-Bold")
+       .fontSize(16)
+       .fillColor(CONFIG.COLORS.background)
+       .text("ENSEIGNANT CHERCHEUR", 70, 80);
+
+    doc.font("Helvetica")
+       .fontSize(12)
+       .fillColor(CONFIG.COLORS.white)
+       .text(`Département: ${professeur.departement || "Informatique"}`, 20, 150);
+
+    // Generate and add QR Code - placé avant les informations de contact
+    try {
+        const qrCodeData = `${CONFIG.BASE_URL}/ProfileProf/${professeur.id}`;
+        const qrCodeImage = await QRCode.toDataURL(qrCodeData);
+        doc.image(qrCodeImage, 20, 170, {
+            width: 35,
+            height: 35
+        });
+    } catch (error) {
+        console.error("QR Code generation error:", error);
+    }
+
+    // Contact information - après le QR code
+    doc.fontSize(10)
+       .text(professeur.telephone || "+212 xxx xxx xxx", 70, 170)
+       .text(professeur.email, 70, 185)
+       .text("www.fs.ucd.ac.ma", 70, 200);
+
+    // Photo du professeur
+    const photoX = 280;
+    const photoY = 130;
+    const photoSize = 80;
+
+    if (professeur.photo_profil) {
+        let tempPhotoPath = null;
+        try {
+            const imageUrl = `${CONFIG.API_URL}${professeur.photo_profil}`;
+            const response = await axios({
+                method: "get",
+                url: imageUrl,
+                responseType: "arraybuffer",
+                timeout: 5000
+            });
+
+            tempPhotoPath = path.join(tempPath, `prof_${professeur.id}_photo_${Date.now()}.jpg`);
+            fs.writeFileSync(tempPhotoPath, response.data);
+
+            doc.image(tempPhotoPath, photoX, photoY, {
+                width: photoSize,
+                height: photoSize,
+                fit: [photoSize, photoSize]
+            });
+
+            fs.unlink(tempPhotoPath, err => {
+                if (err) console.error("Error deleting temp file:", err);
+            });
+        } catch (error) {
+            console.error("Error processing professor photo:", error);
+            // Si erreur lors du chargement de la photo, afficher le cadre blanc
+            doc.rect(photoX, photoY, photoSize, photoSize)
+               .fill(CONFIG.COLORS.white);
+        }
+    } else {
+        // Afficher le cadre blanc uniquement s'il n'y a pas de photo
+        doc.rect(photoX, photoY, photoSize, photoSize)
+           .fill(CONFIG.COLORS.white);
+    }
+
+    // Bottom bar
+    doc.rect(0, CONFIG.CARD_HEIGHT - 30, CONFIG.CARD_WIDTH, 30)
+       .fillColor(CONFIG.COLORS.accent)
+       .fill();
+    
+    
+}
+
+// Routes restent identiques
+router.get("/:id/generate-pdf", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id || isNaN(id)) {
+            return res.status(400).json({ error: "Invalid professor ID" });
+        }
+
+        const [results] = await db.promise().query("SELECT * FROM Professeurs WHERE id = ?", [id]);
+
+        if (!results || results.length === 0) {
             return res.status(404).json({ error: "Professeur non trouvé" });
         }
 
-        const professeur = results[0];
-
-        // Génération du QR Code
-        const qrCodeData = `http://localhost:3000/ProfileProf/${id}`;
-        const qrCodeImage = await QRCode.toDataURL(qrCodeData);
-
         const doc = new PDFDocument({
-            size: [400, 250],
-            margins: {
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0
-            }
+            size: [CONFIG.CARD_WIDTH, CONFIG.CARD_HEIGHT],
+            margins: { top: 0, bottom: 0, left: 0, right: 0 }
         });
 
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader(
             "Content-Disposition", 
-            `attachment; filename=carte_${professeur.nom}_${professeur.prenom}.pdf`
+            `attachment; filename=carte_${results[0].nom}_${results[0].prenom}.pdf`
         );
 
         doc.pipe(res);
-
-        // Fond vert foncé
-        doc.rect(0, 0, 400, 250).fill("#004d40");
-
-        // Section dorée en diagonal (triangle)
-        doc.save()
-           .moveTo(250, 0)
-           .lineTo(400, 0)
-           .lineTo(400, 100)
-           .fill("#996515");
-
-        // Rectangle blanc central plus petit
-        doc.rect(50, 70, 300, 50)
-           .fill("#FFFFFF");
-
-        // Logo en haut à gauche
-        const logoPath = path.join(imagesPath, "FS.png");
-        if (fs.existsSync(logoPath)) {
-            doc.image(logoPath, 20, 15, {
-                width: 40,
-                height: 40
-            });
-        }
-
-        // Titre de l'établissement
-        doc.font("Helvetica-Bold")
-           .fontSize(14)
-           .fillColor("#FFFFFF")
-           .text("FACULTY OF SCIENCES", 70, 15)
-           .fontSize(12)
-           .text("EL JADIDA", 70, 35)
-           .text("MOROCCO", 280, 15, { align: 'right' });
-
-        // Nom et prénom
-        doc.fontSize(12)
-           .fillColor("#FFFFFF")
-           .text(`${professeur.nom} ${professeur.prenom}`, 20, 130);
-
-        // Titre "ENSEIGNANT CHERCHEUR"
-        doc.font("Helvetica-Bold")
-           .fontSize(18)
-           .fillColor("#004d40")
-           .text("ENSEIGNANT CHERCHEUR", 70, 80);
-
-        // Département
-        doc.font("Helvetica")
-           .fontSize(12)
-           .fillColor("#FFFFFF")
-           .text(`Département: ${professeur.departement || "Informatique"}`, 20, 150);
-
-        // Informations de contact
-        doc.fontSize(10)
-           .fillColor("#FFFFFF")
-           .text(`${professeur.telephone || "+212 xxx xxx xxx"}`, 20, 170)
-           .text(`${professeur.email}`, 20, 185)
-           .text("www.fs.ucd.ac.ma", 20, 200);
-
-        // Logo dans la zone centrale
-        if (fs.existsSync(logoPath)) {
-            doc.image(logoPath, 280, 75, {
-                width: 30,
-                height: 30
-            });
-        }
-
-        // QR Code - Position ajustée
-        doc.image(qrCodeImage, 70, 210, {  
-            width: 35,
-            height: 35
-        });
-
-        // Photo du professeur
-        if (professeur.photo_profil) {
-            try {
-                const imageUrl = `http://localhost:3001${professeur.photo_profil}`;
-                const response = await axios({
-                    method: "get",
-                    url: imageUrl,
-                    responseType: "arraybuffer"
-                });
-
-                tempPhotoPath = path.join(tempPath, `prof_${id}_photo.jpg`);
-                fs.writeFileSync(tempPhotoPath, response.data);
-
-                doc.image(tempPhotoPath, 280, 130, {
-                    width: 80,
-                    height: 80,
-                    fit: [80, 80]
-                });
-            } catch (error) {
-                console.error("Erreur lors du téléchargement de la photo :", error);
-            }
-        }
-
-        // Code-barres en bas
-        doc.rect(120, 220, 260, 20)  // Adjusted width and position to accommodate QR code
-           .fillColor("#000000")
-           .fill();
-        
-        doc.font("Helvetica")
-           .fontSize(10)
-           .fillColor("#FFFFFF")
-           .text("EL JADIDA", 120, 225, {  // Adjusted position to match new rectangle
-               width: 260,
-               align: "center"
-           });
-
-        // Finaliser le PDF
+        await generateCardContent(doc, results[0]);
         doc.end();
 
-        // Nettoyer le fichier temporaire après l'envoi
-        if (tempPhotoPath) {
-            doc.on('end', () => {
-                fs.unlink(tempPhotoPath, (err) => {
-                    if (err) console.error("Erreur lors de la suppression du fichier temporaire:", err);
-                });
-            });
+    } catch (error) {
+        console.error("PDF generation error:", error);
+        res.status(500).json({ error: "Erreur lors de la génération de la carte" });
+    }
+});
+
+router.get("/generate-all-cards", async (req, res) => {
+    try {
+        const [results] = await db.promise().query("SELECT * FROM Professeurs");
+
+        if (!results || results.length === 0) {
+            return res.status(404).json({ error: "Aucun professeur trouvé" });
         }
 
-    } catch (error) {
-        console.error("Erreur lors de la génération du PDF:", error);
-        res.status(500).json({ error: "Erreur lors de la génération de la carte" });
-        
-        if (tempPhotoPath && fs.existsSync(tempPhotoPath)) {
-            fs.unlinkSync(tempPhotoPath);
+        const doc = new PDFDocument({
+            size: [CONFIG.CARD_WIDTH, CONFIG.CARD_HEIGHT],
+            margins: { top: 0, bottom: 0, left: 0, right: 0 }
+        });
+
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", "attachment; filename=toutes_les_cartes.pdf");
+
+        doc.pipe(res);
+
+        for (let i = 0; i < results.length; i++) {
+            await generateCardContent(doc, results[i], i === 0);
         }
+
+        doc.end();
+
+    } catch (error) {
+        console.error("PDF generation error:", error);
+        res.status(500).json({ error: "Erreur lors de la génération des cartes" });
     }
 });
 

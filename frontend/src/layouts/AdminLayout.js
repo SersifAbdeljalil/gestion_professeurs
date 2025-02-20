@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome, FaPlus, FaFileImport, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import "../styles/Admin.css"; 
+import FS from '../images/FS.png';
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
@@ -15,16 +16,18 @@ const AdminLayout = ({ children }) => {
     <div className="dashboard-container">
       {/* Barre latérale fixe */}
       <aside className="sidebar">
-        <h2>Menu Administrateur</h2>
+        <div className="logo-container">
+          <img 
+            src={FS} alt="Logo Admin"
+            className="admin-logo"
+          />
+        </div>
         <nav className="sidebar-menu">
           <Link to="/admin" className="nav-item">
             <FaHome /> Accueil
           </Link>
           <Link to="/ajouter-professeur" className="nav-item">
             <FaPlus /> Ajouter Professeur
-          </Link>
-          <Link to="/importer-prof" className="nav-item">
-            <FaFileImport /> Importer Fichier
           </Link>
         </nav>
         {/* Bouton Déconnexion en bas */}
