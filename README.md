@@ -1,4 +1,4 @@
-## Guide d'installation et de lancement du projet
+## Guide d'installation et de lancement du projet.
 
 ## Étapes pour lancer le projet
 
